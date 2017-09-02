@@ -21,25 +21,25 @@ public interface JaxRPCWebServiceModel extends WebServiceModel
     String JAXRPC_XML_DESCRIPTOR = "jaxrpcXmlDescriptor";
     
     /**
-     * Contains the JAX-WS implementation class
+     * Contains the JAX-RPC implementation class
      */
     @Adjacency(label = JAXRPC_IMPLEMENTATION_CLASS, direction = Direction.OUT)
     void setImplementationClass(JavaClassModel implRef);
 
     /**
-     * Contains the JAX-WS implementation class
+     * Contains the JAX-RPC implementation class
      */
     @Adjacency(label = JAXRPC_IMPLEMENTATION_CLASS, direction = Direction.OUT)
     JavaClassModel getImplementationClass();
 
     /**
-     * Contains the JAX-WS implementation class
+     * Contains the JAX-RPC implementation class
      */
     @Adjacency(label = JAXRPC_INTERFACE, direction = Direction.OUT)
     void setInterface(JavaClassModel interfaceRef);
 
     /**
-     * Contains the JAX-WS implementation class
+     * Contains the JAX-RPC implementation class
      */
     @Adjacency(label = JAXRPC_INTERFACE, direction = Direction.OUT)
     JavaClassModel getInterface();

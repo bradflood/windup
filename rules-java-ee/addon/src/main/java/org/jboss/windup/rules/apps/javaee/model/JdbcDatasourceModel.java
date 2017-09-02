@@ -3,13 +3,12 @@ package org.jboss.windup.rules.apps.javaee.model;
 import com.tinkerpop.frames.Property;
 import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 import org.jboss.windup.graph.model.WindupVertexFrame;
-import org.jboss.windup.rules.apps.java.model.mixin.HasTypeModel;
 
 
 /**
- * Describes a general JDBC datasource, the basic propeties.
+ * Describes a general JDBC datasource, the basic properties.
  * A datasource may be discovered in the application, for instance, JBoss -ds.xml file;
- * or, refenced from the app, but defined in server's configuration, e.g. through web-app.xml's resource-ref.
+ * or, referenced from the app, but defined in server's configuration, e.g. through web-app.xml's resource-ref.
  *
  * @author <a href="mailto:zizka@seznam.cz">Ondrej Zizka</a>
  */
