@@ -3,22 +3,22 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <version.forge>3.6.0.Final</version.forge>
-        <version.furnace>2.25.4.Final</version.furnace>
-        <version.nexus.index>6.3</version.nexus.index>
+        <version.forge>3.7.2.Final</version.forge>
+        <version.furnace>2.26.2.Final</version.furnace>
+        <version.nexus.index>6.4</version.nexus.index>
     </properties>
 
     <!-- Does NOT use windup-parent - this is a BOM. -->
     <parent>
         <groupId>org.jboss</groupId>
         <artifactId>jboss-parent</artifactId>
-        <version>20</version>
+        <version>22</version>
         <relativePath />
     </parent>
 
     <groupId>org.jboss.windup</groupId>
     <artifactId>windup-bom</artifactId>
-    <version>4.0.0-SNAPSHOT</version>
+    <version>4.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <name>Windup BOM</name>
@@ -143,6 +143,13 @@
             <dependency>
                 <groupId>org.jboss.windup.exec</groupId>
                 <artifactId>windup-exec-impl</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Windup Engine - Server Service Provider Addon -->
+            <dependency>
+                <groupId>org.jboss.windup</groupId>
+                <artifactId>windup-server-provider-spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

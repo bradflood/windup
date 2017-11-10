@@ -15,6 +15,9 @@
 
 <#macro ignoredFileRenderer reportModel>
     <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">Ignored Files</h3>
+        </div>
         <table class="table table-striped table-bordered">
             <tr>
                 <th>File</th>
@@ -22,7 +25,7 @@
                 <th>Ignored Reason</th>
             </tr>
 
-            <#list reportModel.ignoredFiles.iterator() as file>
+            <#list reportModel.ignoredFiles as file>
             <tr>
                 <td> <#if file.fileName?has_content> ${file.fileName} </#if> </td>
                 <td> <#if file.filePath?has_content> ${file.filePath} </#if> </td>
@@ -35,7 +38,7 @@
 
 
 <#macro fileRegexesRenderer reportModel>
-    <#if reportModel.fileRegexes.iterator()?has_content>
+    <#if reportModel.fileRegexes?has_content>
         <div class="panel panel-primary">
             <table class="table table-striped table-bordered">
                 <tr>
@@ -43,7 +46,7 @@
                     <th>Compilable</th>
                 </tr>
 
-                <#list reportModel.fileRegexes.iterator() as regex>
+                <#list reportModel.fileRegexes as regex>
                 <tr>
                     <td>${regex.regex!""}</td>
                     <td>${regex.compilationError!"OK"}</td>
@@ -57,7 +60,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>${reportModel.projectModel.name} - Ignored files</title>
+    <title>${reportModel.projectModel.name} - Ignored Files</title>
     <link href="resources/css/bootstrap.min.css" rel="stylesheet">
     <link href="resources/css/windup.css" rel="stylesheet" media="screen">
     <link href="resources/css/windup.java.css" rel="stylesheet" media="screen">

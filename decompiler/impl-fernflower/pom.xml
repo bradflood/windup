@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.jboss.windup.decompiler</groupId>
         <artifactId>decompiler-parent</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>decompiler-fernflower</artifactId>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>org.jboss.windup.decompiler.fernflower</groupId>
             <artifactId>windup-fernflower</artifactId>
-            <version>1.0.0.20160505</version>
+            <version>1.0.0.20171018</version>
         </dependency>
 
         <!-- Addon Dependencies -->

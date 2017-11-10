@@ -54,7 +54,7 @@ public class MavenStructureRenderer
                 try {
                     String subDir = entry.getKey();
                     Path resultPomXmlPath = mavenizedAppPath.resolve(subDir).resolve("pom.xml");
-                    LOG.info("Writing " + subDir + "/pom.xml" + "\n > " + entry.getValue());
+                    LOG.info("Writing " + subDir + "/pom.xml" + System.lineSeparator()+"  > " + entry.getValue());
                     renderPomXml(mavCtx, entry.getValue(), resultPomXmlPath);
                 }
                 catch (Throwable ex)
@@ -80,17 +80,17 @@ public class MavenStructureRenderer
 
         try
         {
-            LOG.info("Rendering template: " + template + " into " + pomXmlPath + "\n - " + pom);
+            LOG.info("Rendering template: " + template + " into " + pomXmlPath + System.lineSeparator()+"  - " + pom);
             Files.createDirectories(pomXmlPath.getParent());
             renderFreemarkerTemplate(template, vars, pomXmlPath);
         }
         catch (ParseException ex)
         {
-            throw new WindupException("Could not parse pom.xml template: " + template + "\nReason: " + ex.getMessage(), ex);
+            throw new WindupException("Could not parse pom.xml template: " + template + System.lineSeparator()+" Reason: " + ex.getMessage(), ex);
         }
         catch (IOException | TemplateException ex)
         {
-            throw new WindupException("Error rendering pom.xml template: " + template + "\nReason: " + ex.getMessage(), ex);
+            throw new WindupException("Error rendering pom.xml template: " + template + System.lineSeparator()+" Reason: " + ex.getMessage(), ex);
         }
     }
 
@@ -123,9 +123,10 @@ public class MavenStructureRenderer
         if(templatePath == null)
             throw new WindupException("templatePath is null");
 
-        freemarker.template.Configuration freemarkerConfig = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_23);
+        freemarker.template.Configuration freemarkerConfig = new freemarker.template.Configuration(freemarker.template.Configuration.VERSION_2_3_26);
         DefaultObjectWrapperBuilder objectWrapperBuilder = new DefaultObjectWrapperBuilder(freemarker.template.Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
         objectWrapperBuilder.setUseAdaptersForContainers(true);
+        objectWrapperBuilder.setIterableSupport(true);
         freemarkerConfig.setObjectWrapper(objectWrapperBuilder.build());
         freemarkerConfig.setTemplateLoader(new FurnaceFreeMarkerTemplateLoader());
         Template template = freemarkerConfig.getTemplate(templatePath.toString().replace('\\', '/'));
@@ -145,7 +146,7 @@ public class MavenStructureRenderer
         StringBuilder sb = new StringBuilder("Errors when creating the Maven project directory tree:\n");
         for (Throwable ex : exceptions)
         {
-            sb.append("    ").append(ex.getMessage()).append("\n");
+            sb.append("    ").append(ex.getMessage()).append(System.lineSeparator());
         }
         sb.append("The first error's stack trace:\n    ");
         sb.append(ExceptionUtils.getStackTrace(exceptions.get(0)));

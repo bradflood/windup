@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.jboss.windup</groupId>
         <artifactId>windup-parent</artifactId>
-        <version>4.0.0-SNAPSHOT</version>
+        <version>4.1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>org.jboss.windup.tests</groupId>
@@ -163,6 +163,19 @@
                         </configuration>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>${testExcludeString}</exclude>
+                    </excludes>
+                    <!-- http://maven.apache.org/surefire/maven-surefire-plugin/faq.html#late-property-evaluation -->
+                    <argLine>-Xms512m -Xmx2048m -XX:MaxMetaspaceSize=768m -XX:ReservedCodeCacheSize=128m</argLine>
+                    <reuseForks>false</reuseForks>
+                    <forkCount>1</forkCount>
+                </configuration>
             </plugin>
         </plugins>
     </build>

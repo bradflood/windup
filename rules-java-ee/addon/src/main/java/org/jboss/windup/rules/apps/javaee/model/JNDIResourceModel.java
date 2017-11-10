@@ -1,6 +1,7 @@
 package org.jboss.windup.rules.apps.javaee.model;
 
 import org.jboss.windup.graph.Indexed;
+import org.jboss.windup.graph.model.HasApplications;
 import org.jboss.windup.graph.model.ProjectModel;
 import org.jboss.windup.graph.model.WindupVertexFrame;
 
@@ -18,7 +19,7 @@ import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 @TypeValue(JNDIResourceModel.TYPE)
 public interface JNDIResourceModel extends WindupVertexFrame, HasApplications
 {
-    String TYPE = "JNDIResource";
+    String TYPE = "JNDIResourceModel";
     String JNDI_LOCATION = "JNDI_LOCATION";
     String APPLICATIONS = TYPE + "-application";
 

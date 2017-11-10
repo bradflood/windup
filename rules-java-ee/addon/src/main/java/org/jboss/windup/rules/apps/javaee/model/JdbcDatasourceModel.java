@@ -15,7 +15,7 @@ import org.jboss.windup.graph.model.WindupVertexFrame;
 @TypeValue(JdbcDatasourceModel.TYPE)
 public interface JdbcDatasourceModel extends WindupVertexFrame
 {
-    String TYPE = "JdbcDatasource";
+    String TYPE = "JdbcDatasourceModel";
 
     String NAME = TYPE + "-name";
     String URL = TYPE + "-url";

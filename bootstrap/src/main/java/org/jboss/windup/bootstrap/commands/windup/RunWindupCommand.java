@@ -151,7 +151,8 @@ public class RunWindupCommand implements Command, FurnaceDependent
             }
             else
             {
-                String valueString = arguments.get(++i);
+                String valueString = arguments.size() > (i+1) ? arguments.get(++i) : null;
+
                 Object value = convertType(option.getType(), valueString);
                 optionValues.put(option.getName(), value);
             }
@@ -191,9 +192,16 @@ public class RunWindupCommand implements Command, FurnaceDependent
 
         // In case of --unzippedAppInput or --sourceMode, treat the directories in --input as unzipped applications.
         // Otherwise, as a directory containing separate applications (default).
-        Boolean isExplodedApp =
-                (Boolean) optionValues.get(ExplodedAppInputOption.NAME)
-                    || (Boolean) optionValues.get(SourceModeOption.NAME);
+        boolean isExplodedApp = false;
+        if (optionValues.containsKey(ExplodedAppInputOption.NAME))
+        {
+            isExplodedApp = (Boolean) optionValues.get(ExplodedAppInputOption.NAME);
+        }
+        if (optionValues.containsKey(SourceModeOption.NAME))
+        {
+            isExplodedApp = (isExplodedApp == Boolean.TRUE ) ? Boolean.TRUE : (Boolean) optionValues.get(SourceModeOption.NAME); 
+        }
+
         if (!isExplodedApp)
         {
             List<Path> input = (List<Path>) optionValues.get(InputPathOption.NAME);
@@ -334,7 +342,8 @@ public class RunWindupCommand implements Command, FurnaceDependent
 
     private void setDefaultOutputPath(Map<String, Object> optionValues)
     {
-        if (!optionValues.containsKey(OutputPathOption.NAME))
+        Object obj = optionValues.getOrDefault(OutputPathOption.NAME, null);
+        if (obj == null || (obj instanceof File && StringUtils.isBlank( ((File) obj).getPath())) )
         {
             Iterable<Path> paths = (Iterable<Path>) optionValues.get(InputPathOption.NAME);
             if (paths != null && paths.iterator().hasNext())
@@ -355,6 +364,9 @@ public class RunWindupCommand implements Command, FurnaceDependent
 
     private Object convertType(Class<?> type, String input)
     {
+        if (input == null)
+            return null;
+
         if (Path.class.isAssignableFrom(type))
         {
             return Paths.get(input);
@@ -395,10 +407,12 @@ public class RunWindupCommand implements Command, FurnaceDependent
         return furnace.getAddonRegistry().getServices(WindupProcessor.class).get();
     }
 
-    private GraphContextFactory getGraphContextFactory()
-    {
-        return furnace.getAddonRegistry().getServices(GraphContextFactory.class).get();
-    }
+// TODO: Not Used anymore, candidate to remove
+//
+//    private GraphContextFactory getGraphContextFactory()
+//    {
+//        return furnace.getAddonRegistry().getServices(GraphContextFactory.class).get();
+//    }
 
     private String getOptionName(String argument)
     {
@@ -423,7 +437,7 @@ public class RunWindupCommand implements Command, FurnaceDependent
             catch (IOException ex)
             {
                 log.log(Level.WARNING, "Failed deleting graph directory: " + graphPath.toFile().getPath()
-                            + "\n\tDue to: " + ex.getMessage(), ex);
+                            + System.lineSeparator()+"\tDue to: " + ex.getMessage(), ex);
             }
         }
     }
@@ -445,7 +459,8 @@ public class RunWindupCommand implements Command, FurnaceDependent
             }
             if (!Files.isDirectory(path))
             {
-                log.warning("Neither a file or directory found in input: " + path.toString());
+                String pathString = (path == null) ? "" : path.toString(); 
+                log.warning("Neither a file or directory found in input: " + pathString);
                 continue;
             }
 

@@ -29,7 +29,6 @@ import org.jboss.windup.reporting.model.TechnologyTagLevel;
 import org.jboss.windup.reporting.service.TechnologyTagService;
 import org.jboss.windup.rules.apps.java.model.JavaClassFileModel;
 import org.jboss.windup.rules.apps.java.model.JavaSourceFileModel;
-import org.jboss.windup.rules.apps.java.reporting.freemarker.filepath.GetPrettyPathForFile;
 import org.jboss.windup.rules.apps.java.scan.provider.IndexJavaSourceFilesRuleProvider;
 import org.jboss.windup.rules.apps.java.service.WindupJavaConfigurationService;
 import org.jboss.windup.util.ExecutionStatistics;
@@ -314,7 +313,7 @@ public class FernflowerDecompilerOperation extends AbstractDecompilerOperation
             queueSize.incrementAndGet();
             executorService.submit(saveDecompiledRunnable);
 
-            while (queueSize.get() > 1000)
+            while (queueSize.get() > 100000)
             {
                 try
                 {

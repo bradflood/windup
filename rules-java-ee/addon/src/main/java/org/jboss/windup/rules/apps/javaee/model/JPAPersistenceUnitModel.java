@@ -2,7 +2,11 @@ package org.jboss.windup.rules.apps.javaee.model;
 
 import java.util.Map;
 
+import com.tinkerpop.blueprints.Vertex;
+import com.tinkerpop.frames.modules.javahandler.JavaHandler;
+import com.tinkerpop.frames.modules.javahandler.JavaHandlerContext;
 import org.jboss.windup.graph.MapInAdjacentProperties;
+import org.jboss.windup.graph.model.HasApplications;
 import org.jboss.windup.graph.model.ProjectModel;
 import org.jboss.windup.graph.model.WindupVertexFrame;
 
@@ -20,7 +24,7 @@ import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 @TypeValue(JPAPersistenceUnitModel.TYPE)
 public interface JPAPersistenceUnitModel extends WindupVertexFrame, HasApplications
 {
-    String TYPE = "JPAPersistenceUnit";
+    String TYPE = "JPAPersistenceUnitModel";
 
     String DATASOURCE = "datasource";
     String NAME = TYPE + "-name";
@@ -79,4 +83,25 @@ public interface JPAPersistenceUnitModel extends WindupVertexFrame, HasApplicati
      */
     @MapInAdjacentProperties(label = "persistenceUnitProperties")
     void setProperties(Map<String, String> map);
+
+    @JavaHandler
+    @Override
+    Iterable<ProjectModel> getApplications();
+
+    @JavaHandler
+    @Override
+    boolean belongsToProject(ProjectModel projectModel);
+
+    abstract class Impl implements JPAPersistenceUnitModel, JavaHandlerContext<Vertex>
+    {
+        public Iterable<ProjectModel> getApplications()
+        {
+            return this.getJPAConfigurationFileModel().getApplications();
+        }
+
+        public boolean belongsToProject(ProjectModel projectModel)
+        {
+            return this.getJPAConfigurationFileModel().belongsToProject(projectModel);
+        }
+    }
 }

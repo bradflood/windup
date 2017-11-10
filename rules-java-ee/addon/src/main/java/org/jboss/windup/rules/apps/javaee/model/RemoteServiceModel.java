@@ -1,5 +1,6 @@
 package org.jboss.windup.rules.apps.javaee.model;
 
+import org.jboss.windup.graph.model.HasApplications;
 import org.jboss.windup.graph.model.ProjectModel;
 import org.jboss.windup.graph.model.WindupVertexFrame;
 
@@ -18,7 +19,7 @@ import com.tinkerpop.frames.modules.typedgraph.TypeValue;
 @TypeValue(RemoteServiceModel.TYPE)
 public interface RemoteServiceModel extends WindupVertexFrame, HasApplications
 {
-    String TYPE = "RemoteService";
+    String TYPE = "RemoteServiceModel";
 
     String APPLICATIONS = "application";
 

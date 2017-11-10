@@ -24,11 +24,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jboss.forge.furnace.Furnace;
-import org.jboss.forge.furnace.impl.addons.AddonRepositoryImpl;
 import org.jboss.forge.furnace.repositories.AddonRepository;
 import org.jboss.forge.furnace.repositories.AddonRepositoryMode;
 import org.jboss.forge.furnace.repositories.MutableAddonRepository;
 import org.jboss.forge.furnace.se.FurnaceFactory;
+import org.jboss.forge.furnace.services.Imported;
 import org.jboss.forge.furnace.versions.EmptyVersion;
 import org.jboss.forge.furnace.versions.SingleVersion;
 import org.jboss.forge.furnace.versions.Version;
@@ -53,6 +53,7 @@ import org.jboss.windup.bootstrap.commands.windup.RunWindupCommand;
 import org.jboss.windup.bootstrap.commands.windup.ServerModeCommand;
 import org.jboss.windup.bootstrap.commands.windup.UpdateRulesetsCommand;
 import org.jboss.windup.bootstrap.listener.GreetingListener;
+import org.jboss.windup.server.WindupServerProvider;
 import org.jboss.windup.util.Util;
 
 /**
@@ -316,6 +317,22 @@ public class Bootstrap
 
             furnace.addContainerLifecycleListener(new GreetingListener());
 
+            // Now see if there are any server SPIs that need to run
+            Imported<WindupServerProvider> serverProviders = furnace.getAddonRegistry().getServices(WindupServerProvider.class);
+            for (WindupServerProvider serverProvider : serverProviders)
+            {
+                String expectedArgName = serverProvider.getName();
+
+                boolean matches = args.stream().anyMatch(arg ->
+                    arg.equals(expectedArgName) || arg.equals("--" + expectedArgName)
+                );
+                if (matches)
+                {
+                    serverProvider.runServer(args.toArray(new String[args.size()]));
+                    return;
+                }
+            }
+
             if (!executePhase(CommandPhase.EXECUTION, commands) || commands.isEmpty())
                 return;
 
@@ -388,15 +405,15 @@ public class Bootstrap
             }
             else if ("--listTags".equals(arg))
             {
-                commands.add(new ListTagsCommand());
+                commands.add(new ListTagsCommand(arguments));
             }
             else if ("--listSourceTechnologies".equals(arg))
             {
-                commands.add(new ListSourceTechnologiesCommand());
+                commands.add(new ListSourceTechnologiesCommand(arguments));
             }
             else if ("--listTargetTechnologies".equals(arg))
             {
-                commands.add(new ListTargetTechnologiesCommand());
+                commands.add(new ListTargetTechnologiesCommand(arguments));
             }
             else if ("--generateCompletionData".equals(arg))
             {
@@ -459,19 +476,19 @@ public class Bootstrap
         return true;
     }
 
-    private File getWindupAddonsDir()
-    {
-        return new File(getWindupHome(), "addons");
-    }
+//    private File getWindupAddonsDir()
+//    {
+//        return new File(getWindupHome(), "addons");
+//    }
 
-    private File getWindupHome()
-    {
-        String windupHome = System.getProperty(WINDUP_HOME);
-        if (windupHome == null)
-        {
-            Path path = new File("").toPath();
-            return path.toFile();
-        }
-        return Paths.get(windupHome).toFile();
-    }
+//    private File getWindupHome()
+//    {
+//        String windupHome = System.getProperty(WINDUP_HOME);
+//        if (windupHome == null)
+//        {
+//            Path path = new File("").toPath();
+//            return path.toFile();
+//        }
+//        return Paths.get(windupHome).toFile();
+//    }
 }

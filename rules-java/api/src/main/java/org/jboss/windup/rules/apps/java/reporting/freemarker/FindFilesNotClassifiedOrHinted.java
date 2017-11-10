@@ -1,5 +1,6 @@
 package org.jboss.windup.rules.apps.java.reporting.freemarker;
 
+import freemarker.template.DefaultIterableAdapter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,7 +22,6 @@ import org.jboss.windup.util.ExecutionStatistics;
 
 import com.tinkerpop.blueprints.Vertex;
 
-import freemarker.ext.beans.StringModel;
 import freemarker.template.TemplateModelException;
 
 /**
@@ -54,7 +54,7 @@ public class FindFilesNotClassifiedOrHinted implements WindupFreeMarkerMethod
         {
             throw new TemplateModelException("Error, method expects one argument (Iterable<FileModel>)");
         }
-        StringModel stringModelArg = (StringModel) arguments.get(0);
+        DefaultIterableAdapter stringModelArg = (DefaultIterableAdapter) arguments.get(0);
         @SuppressWarnings("unchecked")
         Iterable<FileModel> fileModels = (Iterable<FileModel>) stringModelArg.getWrappedObject();
 
